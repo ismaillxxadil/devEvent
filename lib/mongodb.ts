@@ -2,11 +2,6 @@ import mongoose, { ConnectOptions } from "mongoose";
 
 // Ensure the MONGO_URI is provided via environment variables
 const MONGO_URI = process.env.MONGO_URI as string;
-if (!MONGO_URI) {
-  throw new Error(
-    "Please define the MONGO_URI environment variable inside .env.local"
-  );
-}
 
 // Define a typed cache object stored on the global object so the connection
 // is preserved across module reloads in development. This prevents creating
@@ -18,7 +13,6 @@ type MongooseCache = {
 
 declare global {
   // Allow `globalThis.__mongooseCache` to exist. Use a unique name to avoid collisions.
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   var __mongooseCache: MongooseCache | undefined;
 }
 
@@ -35,6 +29,11 @@ if (!globalThis.__mongooseCache) globalThis.__mongooseCache = cache;
  * successful connection.
  */
 export async function connectToDatabase(): Promise<typeof mongoose> {
+  if (!MONGO_URI) {
+    throw new Error(
+      "Please define the MONGO_URI environment variable inside .env.local"
+    );
+  }
   // If we've already connected, return the cached connection
   if (cache.conn) {
     return cache.conn;
