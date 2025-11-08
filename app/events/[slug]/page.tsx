@@ -39,6 +39,19 @@ const Tags = ({ tags }: { tags: string[] }) => (
     ))}
   </div>
 );
+/**
+ * Renders the event details page for the event identified by `params.slug`.
+ *
+ * Fetches the event data and similar events, and renders the poster, overview,
+ * details (date, time, location, mode), agenda, organizer, tags, booking panel,
+ * and a list of similar events.
+ *
+ * @param params - An object containing a promise that resolves to `{ slug: string }`.
+ * @returns The React element for the event details page.
+ *
+ * @remarks
+ * If the event cannot be found, this component invokes `notFound()` to trigger a 404 response.
+ */
 export default async function EventDetails({
   params,
 }: {
