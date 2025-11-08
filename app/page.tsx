@@ -1,9 +1,11 @@
 import { EventCard } from "@/component/ui/EventCard";
 import { ExploreBtn } from "@/component/ui/ExploreBtn";
-import { events } from "@/lib/constants";
+import { IEvent } from "@/database";
 import React from "react";
 
-const page = () => {
+const page = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events`);
+  const events: IEvent[] = await res.json();
   return (
     <section>
       <h1 className="text-center ">
