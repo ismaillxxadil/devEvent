@@ -2,6 +2,7 @@ import { BookEvent } from "@/component/ui/BookEvent";
 import { EventCard } from "@/component/ui/EventCard";
 import { IEvent } from "@/database";
 import { getSimilarEvents } from "@/lib/actions/event.ation";
+import { cacheLife } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -44,6 +45,8 @@ export default async function EventDetails({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  "use cache";
+  cacheLife("hours");
   const bookings = 10;
   const { slug } = await params;
   const similarEvents = (await getSimilarEvents(slug)) as unknown as IEvent[];
@@ -115,7 +118,7 @@ export default async function EventDetails({
             ) : (
               <p className="text-sm">Be the first to book this event</p>
             )}
-            <BookEvent />
+            <BookEvent eventId={event._id} slug={event.slug} />
           </div>
         </aside>
       </div>
